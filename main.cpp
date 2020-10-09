@@ -2,24 +2,25 @@
 
 using namespace std;
 
-//template <typename T>
-//void sort(T *first, T *last) {
+//void sort(Type *first, Type *last) {
 //
 //}
 
-void swap(int &a, int &b) {
-    int t = b;
+template <typename Type>
+void swapCustom(Type &a, Type &b) {
+    Type t = b;
     b = a;
     a = t;
 }
 
-void insertionSort(int array[], int arraySize) {
+template <typename Type>
+void insertionSort(Type array[], int arraySize) {
     for (int i = 1; i < arraySize; i++) {
         // инвариант: sorted(array, 0, i - 1)
         // && perm(a, old_a)
         for (int j = i; j > 0; j--) {
             if (array[j] < array[j - 1]) {
-                swap(array[j], array[j - 1]);
+                swapCustom(array[j], array[j - 1]);
             }
             // ивариант: sorted(array, j, i)
             // && array[i] <= array[j, i] - текущий элемент <= всех элементов в правой (сдвинутой) части
@@ -28,22 +29,24 @@ void insertionSort(int array[], int arraySize) {
     }
 }
 
-int partition(int array[], int left, int right) {
-    int x = array[left];
-    int lessThanXBorder = left;
-    for (int moreThanXBorder = left + 1; moreThanXBorder <= right; moreThanXBorder++) {
-        // ивариант: array[k] <= x для всех left + 1 <= k <= j
-        // && array[k] > x для всех j + 1 <= k <= moreThanXBorder
-        if (array[moreThanXBorder] <= x) {
-            lessThanXBorder++;
-            swap(array[moreThanXBorder], array[lessThanXBorder]);
+template <typename Type>
+int partition(Type array[], int leftIndex, int rightIndex) {
+    Type x = array[leftIndex];
+    int lessThanXMaxIndex = leftIndex;
+    for (int moreThanXMaxIndex = leftIndex + 1; moreThanXMaxIndex <= rightIndex; moreThanXMaxIndex++) {
+        // ивариант: array[k] <= x для всех leftIndex + 1 <= k <= j
+        // && array[k] > x для всех j + 1 <= k <= moreThanXMaxIndex
+        if (array[moreThanXMaxIndex] <= x) {
+            lessThanXMaxIndex++;
+            swapCustom(array[moreThanXMaxIndex], array[lessThanXMaxIndex]);
         }
     }
-    swap(array[left], array[lessThanXBorder]);
-    return lessThanXBorder;
+    swapCustom(array[leftIndex], array[lessThanXMaxIndex]);
+    return lessThanXMaxIndex;
 }
 
-int findMedian(int left, int middle, int right) {
+template <typename Type>
+Type findMedian(Type left, Type middle, Type right) {
     if (left <= middle) {
         if (right <= left)
             return left;
@@ -61,46 +64,49 @@ int findMedian(int left, int middle, int right) {
     }
 }
 
-void findMedianAndSwap(int &left, int &middle, int &right) {
+template <typename Type>
+void findMedianAndSwap(Type &left, Type &middle, Type &right) {
     if (left <= middle) {
         if (right <= left)
             return;
         else if (middle <= right) {
-            swap(left, middle);
+            swapCustom(left, middle);
         }
         else {
-            swap(left, right);
+            swapCustom(left, right);
         }
     } else {
         if (left <= right)
             return;
         else if (right <= middle) {
-            swap(left, middle);
+            swapCustom(left, middle);
         }
         else {
-            swap(left, right);
+            swapCustom(left, right);
         }
     }
 }
 
-void quickSort(int array[], int left, int right) {
-    if (left >= right)
+template <typename Type>
+void quickSort(Type array[], int leftIndex, int rightIndex) {
+    if (leftIndex >= rightIndex)
         return;
-    int middle = (right - left) / 2;
-    findMedianAndSwap(array[left], array[middle], array[right]);
-    int m = partition(array, left, right);
-    quickSort(array, left, m - 1);
-    quickSort(array, m + 1, right);
+    int middle = (rightIndex - leftIndex) / 2;
+    findMedianAndSwap(array[leftIndex], array[middle], array[rightIndex]);
+    int mIndex = partition(array, leftIndex, rightIndex);
+    quickSort(array, leftIndex, mIndex - 1);
+    quickSort(array, mIndex + 1, rightIndex);
 }
 
 int main() {
-    //const int arraySize = 7;
-    //int unsortedArray[arraySize] = {4, 3, 12, 7, 8, 1, 0};
+//    const int arraySize = 7;
+//    int unsortedArray[arraySize] = {4, 3, 12, 7, 8, 1, 0};
 
     const int arraySize = 8;
     int unsortedArray[arraySize] = {2, 1, 8, 6, 4, 3, 9, 7};
 
     //insertionSort(unsortedArray, arraySize);
+
     quickSort(unsortedArray, 0, arraySize - 1);
 
     for (int i = 0; i < arraySize; i ++) {
