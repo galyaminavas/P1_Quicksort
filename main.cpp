@@ -30,7 +30,7 @@ void insertionSort(Type array[], int arraySize) {
 }
 
 template <typename Type>
-void insertionSortPointers(Type *first, Type *last) {
+void insertionSortWithPointers(Type *first, Type *last) {
     Type *i = first + 1;
     while (i < last + 1) {
         Type *j = i;
@@ -113,19 +113,68 @@ void quickSort(Type array[], int leftIndex, int rightIndex) {
     quickSort(array, mIndex + 1, rightIndex);
 }
 
+template <typename Type>
+void findMedianAndSwapWithPointers(Type &left, Type &middle, Type &right) {
+    if (left <= middle) {
+        if (right <= left)
+            return;
+        else if (middle <= right) {
+            swapCustom(left, middle);
+        }
+        else {
+            swapCustom(left, right);
+        }
+    } else {
+        if (left <= right)
+            return;
+        else if (right <= middle) {
+            swapCustom(left, middle);
+        }
+        else {
+            swapCustom(left, right);
+        }
+    }
+}
+
+template <typename Type>
+Type * partitionWithPointers(Type *leftPointer, Type *rightPointer) {
+    Type *x = leftPointer;
+    Type *lessThanXMaxPointer = leftPointer;
+    for (Type *moreThanXMaxPointer = leftPointer + 1; moreThanXMaxPointer <= rightPointer; moreThanXMaxPointer++) {
+        if (*moreThanXMaxPointer <= *x) {
+            lessThanXMaxPointer++;
+            swapCustom(*moreThanXMaxPointer, *lessThanXMaxPointer);
+        }
+    }
+    swapCustom(*leftPointer, *lessThanXMaxPointer);
+    return lessThanXMaxPointer;
+}
+
+template <typename Type>
+void quickSortWithPointers(Type *leftPointer, Type *rightPointer) {
+    if (leftPointer >= rightPointer)
+        return;
+    int shiftToMiddle = (rightPointer - leftPointer) / 2;
+    Type *middle = leftPointer + shiftToMiddle;
+    findMedianAndSwapWithPointers(*leftPointer, *middle, *rightPointer);
+    Type *mPointer = partitionWithPointers(leftPointer, rightPointer);
+    quickSortWithPointers(leftPointer, mPointer - 1);
+    quickSortWithPointers(mPointer + 1, rightPointer);
+}
+
 int main() {
-    const int arraySize = 7;
-    int unsortedArray[arraySize] = {4, 3, 12, 7, 8, 1, 0};
+//    const int arraySize = 7;
+//    int unsortedArray[arraySize] = {4, 3, 12, 7, 8, 1, 0};
 
 //    const int arraySize = 8;
 //    int unsortedArray[arraySize] = {2, 1, 8, 6, 4, 3, 9, 7};
-//    const int arraySize = 8;
-//    float unsortedArray[arraySize] = {2.0, 1.0, 8.0, 6.5, 4.0, 3.0, 9.2, 7.1};
+    const int arraySize = 8;
+    float unsortedArray[arraySize] = {2.0, 2.0, 8.0, 6.5, 4.0, 3.0, 9.2, 7.1};
 
-    insertionSortPointers(&unsortedArray[0], &unsortedArray[arraySize - 1]);
+//    insertionSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1]);
+    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1]);
 
     //insertionSort(unsortedArray, arraySize);
-
 //    quickSort(unsortedArray, 0, arraySize - 1);
 
     for (int i = 0; i < arraySize; i ++) {
