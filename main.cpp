@@ -19,10 +19,7 @@ int main() {
     float unsortedArray[arraySize] = {2.0, 2.0, 8.0, 6.5, 4.0, 3.0, 9.2, 7.1};
 
 //    insertionSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1]);
-//    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1]);
-
-//    insertionSort(unsortedArray, arraySize);
-//    quickSort(unsortedArray, 0, arraySize - 1);
+    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1]);
 
     for (int i = 0; i < arraySize; i ++) {
         cout << unsortedArray[i] << " ";

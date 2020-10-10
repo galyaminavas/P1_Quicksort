@@ -61,12 +61,27 @@ Type * partitionWithPointers(Type *leftPointer, Type *rightPointer) {
 
 template <typename Type>
 void quickSortWithPointers(Type *leftPointer, Type *rightPointer) {
+    quickSortStart:
+
     if (leftPointer >= rightPointer)
         return;
+
+    // first optimization: choose pivot as median of left border, right border and median
     int shiftToMiddle = (rightPointer - leftPointer) / 2;
     Type *middle = leftPointer + shiftToMiddle;
     findMedianAndSwapWithPointers(*leftPointer, *middle, *rightPointer);
+
+    // second optimization: tail call elimination
     Type *mPointer = partitionWithPointers(leftPointer, rightPointer);
-    quickSortWithPointers(leftPointer, mPointer - 1);
-    quickSortWithPointers(mPointer + 1, rightPointer);
+    if (mPointer - leftPointer > rightPointer - mPointer) {
+        quickSortWithPointers(mPointer + 1, rightPointer);
+        // iterative sort of (leftPointer, mPointer - 1);
+        rightPointer = mPointer - 1;
+        goto quickSortStart;
+    } else {
+        quickSortWithPointers(leftPointer, mPointer - 1);
+        // iterative sort of (mPointer + 1, rightPointer);
+        leftPointer = mPointer + 1;
+        goto quickSortStart;
+    }
 }
