@@ -7,13 +7,13 @@ void swapCustom(Type &a, Type &b) {
     a = t;
 }
 
-template <typename Type>
-void insertionSortWithPointers(Type *first, Type *last) {
+template<typename Type, typename Compare>
+void insertionSortWithPointers(Type *first, Type *last, Compare comp) {
     Type *i = first + 1;
     while (i < last + 1) {
         Type *j = i;
         while (j > first) {
-            if (*j < *(j - 1)) {
+            if (comp(*j, *(j - 1))) {
                 swapCustom(*j, *(j - 1));
             }
             j--;
@@ -22,21 +22,21 @@ void insertionSortWithPointers(Type *first, Type *last) {
     }
 }
 
-template <typename Type>
-void findMedianAndSwapWithPointers(Type &left, Type &middle, Type &right) {
-    if (left <= middle) {
-        if (right <= left)
+template<typename Type, typename Compare>
+void findMedianAndSwapWithPointers(Type &left, Type &middle, Type &right, Compare comp) {
+    if (comp(left, middle)) {
+        if (comp(right, left))
             return;
-        else if (middle <= right) {
+        else if (comp(middle, right)) {
             swapCustom(left, middle);
         }
         else {
             swapCustom(left, right);
         }
     } else {
-        if (left <= right)
+        if (comp(left, right))
             return;
-        else if (right <= middle) {
+        else if (comp(right, middle)) {
             swapCustom(left, middle);
         }
         else {
@@ -45,12 +45,12 @@ void findMedianAndSwapWithPointers(Type &left, Type &middle, Type &right) {
     }
 }
 
-template <typename Type>
-Type * partitionWithPointers(Type *leftPointer, Type *rightPointer) {
+template<typename Type, typename Compare>
+Type * partitionWithPointers(Type *leftPointer, Type *rightPointer, Compare comp) {
     Type *x = leftPointer;
     Type *lessThanXMaxPointer = leftPointer;
     for (Type *moreThanXMaxPointer = leftPointer + 1; moreThanXMaxPointer <= rightPointer; moreThanXMaxPointer++) {
-        if (*moreThanXMaxPointer <= *x) {
+        if (comp(*moreThanXMaxPointer, *x)) {
             lessThanXMaxPointer++;
             swapCustom(*moreThanXMaxPointer, *lessThanXMaxPointer);
         }
@@ -59,27 +59,27 @@ Type * partitionWithPointers(Type *leftPointer, Type *rightPointer) {
     return lessThanXMaxPointer;
 }
 
-template <typename Type>
-void quickSortWithPointers(Type *leftPointer, Type *rightPointer) {
+template<typename Type, typename Compare>
+void quickSortWithPointers(Type *leftPointer, Type *rightPointer, Compare comp) {
     quickSortStart:
 
     if (leftPointer >= rightPointer)
         return;
 
-    // first optimization: choose pivot as median of left border, right border and median
+    // first optimization: choose pivot as median of left border, right border and middle
     int shiftToMiddle = (rightPointer - leftPointer) / 2;
     Type *middle = leftPointer + shiftToMiddle;
-    findMedianAndSwapWithPointers(*leftPointer, *middle, *rightPointer);
+    findMedianAndSwapWithPointers(*leftPointer, *middle, *rightPointer, comp);
 
     // second optimization: tail call elimination
-    Type *mPointer = partitionWithPointers(leftPointer, rightPointer);
+    Type *mPointer = partitionWithPointers(leftPointer, rightPointer, comp);
     if (mPointer - leftPointer > rightPointer - mPointer) {
-        quickSortWithPointers(mPointer + 1, rightPointer);
+        quickSortWithPointers(mPointer + 1, rightPointer, comp);
         // iterative sort of (leftPointer, mPointer - 1);
         rightPointer = mPointer - 1;
         goto quickSortStart;
     } else {
-        quickSortWithPointers(leftPointer, mPointer - 1);
+        quickSortWithPointers(leftPointer, mPointer - 1, comp);
         // iterative sort of (mPointer + 1, rightPointer);
         leftPointer = mPointer + 1;
         goto quickSortStart;
