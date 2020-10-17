@@ -24,7 +24,7 @@ void calcTime() {
         cout << "Test #" << i << endl;
 
         clock_t tStart = clock();
-        quickSortWithPointers(&unsortedVector[0], &unsortedVector[numElements - 1], compare<int>);
+        sort(&unsortedVector[0], &unsortedVector[numElements - 1], compare<int>);
         clock_t tStop = clock();
 
         double seconds = (float(tStop) - tStart) / CLOCKS_PER_SEC;
@@ -45,16 +45,16 @@ void calcTime() {
 int main() {
 //    const int arraySize = 7;
 //    int unsortedArray[arraySize] = {4, 3, 12, 7, 8, 1, 0};
-//    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1], compare<int>);
+//    sort(&unsortedArray[0], &unsortedArray[arraySize - 1], compare<int>);
 
 //    const int arraySize = 8;
 //    int unsortedArray[arraySize] = {2, 1, 8, 6, 4, 3, 9, 7};
-//    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1], compare<int>);
+//    sort(&unsortedArray[0], &unsortedArray[arraySize - 1], compare<int>);
 
 //    const int arraySize = 8;
 //    float unsortedArray[arraySize] = {2.0, 2.0, 8.0, 6.5, 4.0, 3.0, 9.2, 7.1};
-//    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1], [](float a, float b) { return a <= b; });
-////    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 1], compare<float>);
+//    sort(&unsortedArray[0], &unsortedArray[arraySize - 1], [](float a, float b) { return a <= b; });
+////    sort(&unsortedArray[0], &unsortedArray[arraySize - 1], compare<float>);
 
     const int arraySize = 17;
     char unsortedArray[arraySize] = "defnoijklmcpabgh";
@@ -64,7 +64,7 @@ int main() {
     }
     cout << endl;
 
-    quickSortWithPointers(&unsortedArray[0], &unsortedArray[arraySize - 2], compare<char>);
+    sort(&unsortedArray[0], &unsortedArray[arraySize - 2], compare<char>);
 
     for (int i = 0; i < arraySize; i++) {
         cout << unsortedArray[i] << " ";

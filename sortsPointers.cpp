@@ -59,8 +59,14 @@ Type * partitionWithPointers(Type *leftPointer, Type *rightPointer, Compare comp
     return lessThanXMaxPointer;
 }
 
+/// Quick sort function with optimizations
+/// \tparam Type
+/// \tparam Compare
+/// \param leftPointer - pointer to the left element of the (sub)array
+/// \param rightPointer - pointer to the right element of the (sub)array
+/// \param comp - function defining the order of elements of type Type
 template<typename Type, typename Compare>
-void quickSortWithPointers(Type *leftPointer, Type *rightPointer, Compare comp) {
+void sort(Type *leftPointer, Type *rightPointer, Compare comp) {
     quickSortStart:
 
     if (leftPointer >= rightPointer)
@@ -80,12 +86,12 @@ void quickSortWithPointers(Type *leftPointer, Type *rightPointer, Compare comp) 
     // second optimization: tail call elimination
     Type *mPointer = partitionWithPointers(leftPointer, rightPointer, comp);
     if (mPointer - leftPointer > rightPointer - mPointer) {
-        quickSortWithPointers(mPointer + 1, rightPointer, comp);
+        sort(mPointer + 1, rightPointer, comp);
         // iterative sort of (leftPointer, mPointer - 1);
         rightPointer = mPointer - 1;
         goto quickSortStart;
     } else {
-        quickSortWithPointers(leftPointer, mPointer - 1, comp);
+        sort(leftPointer, mPointer - 1, comp);
         // iterative sort of (mPointer + 1, rightPointer);
         leftPointer = mPointer + 1;
         goto quickSortStart;
