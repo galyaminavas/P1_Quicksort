@@ -66,6 +66,12 @@ void quickSortWithPointers(Type *leftPointer, Type *rightPointer, Compare comp) 
     if (leftPointer >= rightPointer)
         return;
 
+    // third optimization: insertion sort for short intervals
+    if (rightPointer - leftPointer < 15) {
+        insertionSortWithPointers(leftPointer, rightPointer, comp);
+        return;
+    }
+
     // first optimization: choose pivot as median of left border, right border and middle
     int shiftToMiddle = (rightPointer - leftPointer) / 2;
     Type *middle = leftPointer + shiftToMiddle;
