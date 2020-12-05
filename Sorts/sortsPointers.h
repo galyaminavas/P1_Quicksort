@@ -1,11 +1,16 @@
 #ifndef P1_QUICKSORT_SORTSPOINTERS_H
 #define P1_QUICKSORT_SORTSPOINTERS_H
 
+#include <utility>
+
 template <typename Type>
 void swapCustom(Type &a, Type &b) {
-    Type t = b;
-    b = a;
-    a = t;
+//    Type t = b;
+//    b = a;
+//    a = t;
+    Type t = std::move(b);
+    b = std::move(a);
+    a = std::move(t);
 }
 
 template<typename Type, typename Compare>

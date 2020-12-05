@@ -7,14 +7,14 @@ TEST(testSort, singleInt) {
     int arrayInit[] = {4};
     int arrayCheck[] = {4};
     sort(&arrayInit[0], &arrayInit[0], [](int a, int b) { return a <= b; });
-    EXPECT_EQ(*arrayInit, *arrayCheck);
+    ASSERT_EQ(*arrayInit, *arrayCheck);
 }
 
 TEST(testSort, singleVector) {
     std::vector<int> vectorInit(1, 15);
     std::vector<int> vectorCheck(1, 15);
     sort(&vectorInit[0], &vectorInit[0], [](int a, int b) { return a <= b; });
-    EXPECT_EQ(vectorInit, vectorCheck);
+    ASSERT_EQ(vectorInit, vectorCheck);
 }
 
 // Tests sort on array of multiple equal elements.
@@ -24,7 +24,7 @@ TEST(testSort, equalInts) {
     int arrayCheck[] = {42, 42, 42, 42, 42, 42, 42, 42, 42};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -32,7 +32,7 @@ TEST(testSort, equalVector) {
     std::vector<int> vectorInit(10, 35);
     std::vector<int> vectorCheck(10, 35);
     sort(&vectorInit[0], &vectorInit[0], [](int a, int b) { return a <= b; });
-    EXPECT_EQ(vectorInit, vectorCheck);
+    ASSERT_EQ(vectorInit, vectorCheck);
 }
 
 //Tests sort on a sorted array.
@@ -42,7 +42,7 @@ TEST(testSort, sortedInt) {
     int arrayCheck[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -53,7 +53,7 @@ TEST(testSort, sortedReverse) {
     int arrayCheck[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -64,7 +64,7 @@ TEST(testSort, duplicatesInt) {
     int arrayCheck[] = {1, 3, 6, 7, 8, 9, 9, 10};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -74,7 +74,7 @@ TEST(testSort, duplicatesInt2) {
     int arrayCheck[] = {0, 1, 2, 2, 3, 3, 3, 3, 9, 9, 9, 11, 22, 47, 65, 83, 822};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -85,7 +85,7 @@ TEST(testSort, bigInt) {
     int arrayCheck[] = {0, 2, 8, 11, 78, 340, 89289000};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -96,7 +96,7 @@ TEST(testSort, negativeInt) {
     int arrayCheck[] = {-6, 0, 0, 1, 9, 17, 91, 178};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -107,7 +107,7 @@ TEST(testSort, negatives) {
     int arrayCheck[] = {-33, -19, -9, -5, -3, -2, -1, -1};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -118,7 +118,7 @@ TEST(testSort, negativesZerosPositives) {
     int arrayCheck[] = {-8, -7, -6, -5, 0, 0, 0, 0, 1, 2, 3};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a <= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
     }
 }
 
@@ -129,6 +129,59 @@ TEST(testSort, negativesZerosPositivesReverse) {
     int arrayCheck[] = {3, 2, 1, 0, 0, 0, 0, -5, -6, -7, -8};
     sort(&arrayInit[0], &arrayInit[arraySize - 1], [](int a, int b) { return a >= b; });
     for (int i = 0; i < arraySize; i++) {
-        EXPECT_EQ(arrayInit[i], arrayCheck[i]);
+        ASSERT_EQ(arrayInit[i], arrayCheck[i]);
+    }
+}
+
+// Test sort for custom class
+TEST(testSort, sortForClass) {
+    class Key {
+    public:
+        int key;
+        char value;
+
+        Key() {
+            key = 0;
+            value = '0';
+        }
+
+        Key(int key_, char value_) {
+            key = key_;
+            value = value_;
+        }
+    };
+
+    Key keysInit[6];
+    Key keysCheck[6];
+
+    keysCheck[0] = Key(1, 'a');
+    keysCheck[1] = Key(2, 'b');
+    keysCheck[2] = Key(3, 'c');
+    keysCheck[3] = Key(4, 'd');
+    keysCheck[4] = Key(5, 'e');
+    keysCheck[5] = Key(6, 'f');
+
+    keysInit[0] = Key(6, 'f');
+    keysInit[1] = Key(4, 'd');
+    keysInit[2] = Key(5, 'e');
+    keysInit[3] = Key(2, 'b');
+    keysInit[4] = Key(1, 'a');
+    keysInit[5] = Key(3, 'c');
+
+//    for (int i = 0; i < 6; i++) {
+//        std::cout << keysInit[i].key << " " << keysInit[i].value << "\n";
+//    }
+//
+//    std::cout << std::endl;
+
+    sort(&keysInit[0], &keysInit[5], [](Key a, Key b) { return a.key <= b.key; });
+
+//    for (int i = 0; i < 6; i++) {
+//        std::cout << keysInit[i].key << " " << keysInit[i].value << "\n";
+//    }
+
+    for (int i = 0; i < 6; i++) {
+        ASSERT_EQ(keysInit[i].key, keysCheck[i].key);
+        ASSERT_EQ(keysInit[i].value, keysCheck[i].value);
     }
 }
